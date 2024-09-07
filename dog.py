@@ -5,6 +5,7 @@
 import bluetooth
 import socket
 import time
+from types import SimpleNamespace
 
 class Dog:
     """ Interface to a Petoi BittleX robot dog over Bluetooth """
@@ -37,8 +38,30 @@ class Dog:
         self.socket.connect((foundAddress, 1))
         print("Connected")
 
-        # Set up servos
+        # Set up servos (BiBoard BittleX)
         self.head = Servo(self, "head", 0)
+
+        self.leg = SimpleNamespace(
+            front = SimpleNamespace(
+                left = Servo(self, "leg.front.left", 8),
+                right = Servo(self, "leg.front.right", 9)
+                ),
+            rear = SimpleNamespace(
+                left = Servo(self, "leg.rear.left", 11),
+                right = Servo(self, "leg.rear.right", 10)
+            )
+        )
+
+        self.knee = SimpleNamespace(
+            front = SimpleNamespace(
+                left = Servo(self, "knee.front.left", 12),
+                right = Servo(self, "knee.front.right", 13)
+                ),
+            rear = SimpleNamespace(
+                left = Servo(self, "knee.rear.left", 15),
+                right = Servo(self, "knee.rear.right", 14)
+            )
+        )
 
     def __del__(self):
         if self.socket:
