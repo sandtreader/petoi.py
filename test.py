@@ -9,6 +9,9 @@ while True:
     dog.up()
     wait(2)
 
+    dog.do("hi")
+    wait(5)
+
     dog.down()
     wait(2)
 
