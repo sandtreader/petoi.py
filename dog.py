@@ -37,6 +37,9 @@ class Dog:
         self.socket.connect((foundAddress, 1))
         print("Connected")
 
+        # Set up servos
+        self.head = Servo(self, "head", 0)
+
     def __del__(self):
         if self.socket:
             self.socket.close()
@@ -64,6 +67,17 @@ class Dog:
         """ Stand up """
         print("Up!")
         self.do("up")
+
+class Servo:
+    """ Represents a single servo motor on a dog """
+    def __init__(self, dog, name, index):
+        self.dog = dog
+        self.name = name
+        self.index = index
+
+    def angle(self, a):
+        print(f"Servo {self.name} -> {a}")
+        self.dog.send(f"m{self.index} {a}")
 
 # Helpers
 def wait(n):

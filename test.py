@@ -9,10 +9,16 @@ while True:
     dog.up()
     wait(2)
 
+    for i in range(3):
+        dog.head.angle(-50)
+        wait(1)
+        dog.head.angle(50)
+        wait(1)
+
     dog.do("hi")
     wait(5)
 
     dog.down()
-    wait(2)
+    wait(10)
 
 
