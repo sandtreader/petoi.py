@@ -8,10 +8,13 @@ import time
 
 class Dog:
     """ Interface to a Petoi BittleX robot dog over Bluetooth """
-    def __init__(self):
+    def __init__(self, addressMatch=""):
         self.socket = None
 
         print(f"Looking for a Bittle dog on Bluetooth")
+        if addressMatch:
+            print(f"Specifically one with {addressMatch} in the address")
+
         foundAddress = ''
         while not foundAddress:
             devices = bluetooth.discover_devices(duration = 5,
@@ -20,8 +23,9 @@ class Dog:
             for address, name in list(devices):
                 print(f"Found {name} at {address}")
                 if "Bittle" in name:
-                    foundAddress = address
-                    break;
+                    if not addressMatch or addressMatch in address:
+                        foundAddress = address
+                        break;
 
             if not foundAddress:
                 print("Not found yet - trying again")
