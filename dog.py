@@ -73,6 +73,7 @@ class Dog:
                 print("Connecting...")
                 self.socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
                 self.socket.connect((foundAddress, 1))
+                self.socket.setblocking(False)
                 print("Connected")
 
         if not self.socket and not self.serial:
@@ -105,8 +106,10 @@ class Dog:
             )
         )
 
-        self.disableVoice();
-        self.disableGyro();
+        self.disable_voice()
+        wait(0.5)
+        self.disable_gyro()
+        wait(1)
         print("Ready!")
 
     def __del__(self):
@@ -119,9 +122,19 @@ class Dog:
         """ Send a raw message """
         print(f">> {msg}")
         if self.socket:
+            self.show_bluetooth_responses();
             self.socket.send(msg)
+            self.show_bluetooth_responses();
         elif self.serial:
             self.serial.write(msg.encode())
+
+    def show_bluetooth_responses(self):
+        try:
+            data = self.socket.recv(1024)
+            if data:
+                print(f"<< {data.decode('utf-8')}")
+        except socket.error as e:
+            pass
 
     def down(self):
         """ Go to rest position """
@@ -142,6 +155,11 @@ class Dog:
         print("Up!")
         self.do("up")
 
+    def walk(self):
+        """ Walk """
+        print("Walkies!")
+        self.do("wkF")
+
     def set(self, index, angle):
         """ Set an individual servo """
         self.send(f"m{index} {angle}")
@@ -160,12 +178,12 @@ class Dog:
             sep = ' '
         self.send(command)
 
-    def disableVoice(self):
+    def disable_voice(self):
         """ Disable voice control """
         print("Disabling voice control")
         self.send("XAd")
 
-    def disableGyro(self):
+    def disable_gyro(self):
         """ Disable gyro """
         print("Disabling gyro control")
         self.send("G")
