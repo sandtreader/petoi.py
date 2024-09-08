@@ -1,4 +1,4 @@
-""" Simple Bluetooth interface to a Petoi Bittle dog
+""" Simple Bluetooth/Serial interface to a Petoi Bittle dog
     By Paul Clark paul@sandtreader.com, MIT licence
 """
 
@@ -25,6 +25,7 @@ class Dog:
         self.serial = None
         self.alive = False
         self.buffer = ''
+        self.debug = False
 
         # Check for serial first
         if not device or "/dev" in device:
@@ -45,6 +46,8 @@ class Dog:
                 self.serial.parity = serial.PARITY_NONE
                 self.serial.timeout = 0  # Non-blocking
                 self.serial.open()
+            else:
+                print("No serial ports found")
 
         if not self.serial:
             print(f"Looking for a dog on Bluetooth")
@@ -54,12 +57,12 @@ class Dog:
             foundAddress = ''
             # Seems to take 2 hits to find anything
             for i in range(2):
-                print(f"Try {i+1}")
+                self.printd(f"Try {i+1}")
                 devices = bluetooth.discover_devices(duration = 2,
                                                      flush_cache = True,
                                                      lookup_names = True)
                 for address, name in list(devices):
-                    print(f"Device {name} at {address}")
+                    self.printd(f"Device {name} at {address}")
                     if "Bittle" in name:
                         if not device or device in address:
                             foundAddress = address
@@ -117,12 +120,16 @@ class Dog:
         if self.serial:
             self.serial.close()
 
+    def printd(self, msg):
+        if self.debug:
+            print(msg)
+
     def send(self, msg):
         """ Send a raw message """
         if self.buffer:
-            print(f"## {self.buffer}")
+            self.printd(f"## {self.buffer}")
             self.buffer = ''             # Flush cruft from previous command
-        print(f">> {msg}")
+        self.printd(f">> {msg}")
         if self.socket:
             self.socket.send(msg)
         elif self.serial:
@@ -136,7 +143,7 @@ class Dog:
             elif self.serial:
                 line = self.get_serial_line()
             if line:
-                print(f"<< {line}")
+                self.printd(f"<< {line}")
                 if line[0].lower() == token.lower():
                     break;
 
@@ -173,22 +180,23 @@ class Dog:
 
     def do(self, skill):
         """ Do a skill ('sit', 'up' etc.) """
+        print(f"Do '{skill}'")
         self.send('k'+skill)
 
     def sit(self):
         """ Sit up """
         print("Sit!")
-        self.do("sit")
+        self.send("ksit")
 
     def up(self):
         """ Stand up """
         print("Up!")
-        self.do("up")
+        self.send("kup")
 
     def walk(self):
         """ Walk """
         print("Walkies!")
-        self.do("wkF")
+        self.send("kwkF")
 
     def set(self, index, angle):
         """ Set an individual servo """
@@ -233,11 +241,12 @@ class Servo:
         return self.name == other.name
 
     def angle(self, a):
-        print(f"Servo {self.name} -> {a}")
+        print(f"Servo {self.name} ({self.index}) -> {a}")
         self.dog.set(self.index, a)
 
 # Helpers
 def wait(n):
     """ Sugar for time.sleep() """
+    print(f"Wait {n}s")
     time.sleep(n)
 

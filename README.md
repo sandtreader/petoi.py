@@ -1,11 +1,11 @@
 # Petoi.py
 
-This is a minimal Python interface to [Petoi](https://petoi.com) BittleX robot dogs, created for a fun half-day workshop.
+This is a minimal Python interface to [Petoi](https://petoi.com) BittleX
+robot dogs, created for a fun half-day workshop.
 
-I'm connecting directly to Bluetooth through [pybluez](https://github.com/pybluez/pybluez) rather than messing
-about with serial devices as the Petoi example code does.
-
-It's not yet a module because I want it to be as simple as
+It will automatically connect through either a serial port (if there are any)
+or Bluetooth.  You can specify specific serial or Bluetooth devices in
+the Dog() constructor if you need to (for example, to run multiple dogs)
 
 ```
 $ pip3 install pybluez
