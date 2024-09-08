@@ -1,6 +1,8 @@
 from dog import *
 
-dog = Dog() # or e.g. Dog("5A:A6") to choose a specific one
+dog = Dog()
+if not dog.alive:
+    quit()
 
 while True:
     dog.sit()

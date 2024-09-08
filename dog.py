@@ -5,38 +5,80 @@
 import bluetooth
 import socket
 import time
+import serial
+import serial.tools.list_ports
+
 from types import SimpleNamespace
 
 class Dog:
-    """ Interface to a Petoi BittleX robot dog over Bluetooth """
-    def __init__(self, addressMatch=""):
+    """
+    Interface to a Petoi BittleX robot dog over Bluetooth or serial.
+
+    If device is empty, looks for any serial port first, then tries any
+    Bluetooth Bittle* device
+
+    To force Bluetooth specify a portion of a MAC address, or ":"
+    To force serial, specify a serial device name - e.g. /dev/rfcomm0
+    """
+    def __init__(self, device=""):
         self.socket = None
+        self.serial = None
+        self.alive = False
 
-        print(f"Looking for a Bittle dog on Bluetooth")
-        if addressMatch:
-            print(f"Specifically one with {addressMatch} in the address")
+        # Check for serial first
+        if not device or "/dev" in device:
+            print(f"Looking for a dog on serial {device}")
+            port = device
+            if not port:
+                # Find the first port
+                ports = serial.tools.list_ports.comports()
+                for port in ports:
+                    port = port.device
+                    break
 
-        foundAddress = ''
-        while not foundAddress:
-            devices = bluetooth.discover_devices(duration = 5,
-                                                 flush_cache = True,
-                                                 lookup_names = True)
-            for address, name in list(devices):
-                print(f"Found {name} at {address}")
-                if "Bittle" in name:
-                    if not addressMatch or addressMatch in address:
-                        foundAddress = address
-                        break;
+            if port:
+                print(f"Using serial port {port}")
+                self.serial = serial.Serial()
+                self.serial.port = port
+                self.serial.baudrate = 115200
+                self.serial.parity = serial.PARITY_NONE
+                self.serial.timeout = 5
+                self.serial.open()
 
-            if not foundAddress:
-                print("Not found yet - trying again")
+        if not self.serial:
+            print(f"Looking for a dog on Bluetooth")
+            if device:
+                print(f"Specifically one with {device} in the address")
 
-        print(f"Found a dog at address {foundAddress}")
+            foundAddress = ''
+            # Seems to take 2 hits to find anything
+            for i in range(2):
+                print(f"Try {i+1}")
+                devices = bluetooth.discover_devices(duration = 2,
+                                                     flush_cache = True,
+                                                     lookup_names = True)
+                for address, name in list(devices):
+                    print(f"Device {name} at {address}")
+                    if "Bittle" in name:
+                        if not device or device in address:
+                            foundAddress = address
+                            break;
 
-        print("Connecting...")
-        self.socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-        self.socket.connect((foundAddress, 1))
-        print("Connected")
+                if foundAddress:
+                    break
+
+            if foundAddress:
+                print(f"Found a dog at Bluetooth address {foundAddress}")
+
+                print("Connecting...")
+                self.socket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+                self.socket.connect((foundAddress, 1))
+                print("Connected")
+
+        if not self.socket and not self.serial:
+            print("No dog found!")
+            return
+        self.alive = True
 
         # Set up servos (BiBoard BittleX)
         self.head = Servo(self, "head", 0)
@@ -66,11 +108,16 @@ class Dog:
     def __del__(self):
         if self.socket:
             self.socket.close()
+        if self.serial:
+            self.serial.close()
 
     def send(self, msg):
         """ Send a raw message """
         print(f">> {msg}")
-        self.socket.send(msg)
+        if self.socket:
+            self.socket.send(msg)
+        elif self.serial:
+            self.serial.write(msg.encode())
 
     def down(self):
         """ Go to rest position """
