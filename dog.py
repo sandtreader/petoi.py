@@ -149,7 +149,7 @@ class Dog:
         """
         print("Pose:")
         command = ''
-        sep = 'm'
+        sep = 'i'
         for servo, angle in servos.items():
             print(f"  {servo.name} -> {angle}")
             command = command + f"{sep}{servo.index} {angle}"
