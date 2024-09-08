@@ -24,6 +24,7 @@ class Dog:
         self.socket = None
         self.serial = None
         self.alive = False
+        self.buffer = ''
 
         # Check for serial first
         if not device or "/dev" in device:
@@ -42,7 +43,7 @@ class Dog:
                 self.serial.port = port
                 self.serial.baudrate = 115200
                 self.serial.parity = serial.PARITY_NONE
-                self.serial.timeout = 5
+                self.serial.timeout = 0  # Non-blocking
                 self.serial.open()
 
         if not self.serial:
@@ -107,9 +108,7 @@ class Dog:
         )
 
         self.disable_voice()
-        wait(0.5)
         self.disable_gyro()
-        wait(1)
         print("Ready!")
 
     def __del__(self):
@@ -122,19 +121,47 @@ class Dog:
         """ Send a raw message """
         print(f">> {msg}")
         if self.socket:
-            self.show_bluetooth_responses();
             self.socket.send(msg)
-            self.show_bluetooth_responses();
         elif self.serial:
             self.serial.write(msg.encode())
+        self.wait_for_response(msg[0]);
 
-    def show_bluetooth_responses(self):
+    def wait_for_response(self, token):
+        while True:
+            if self.socket:
+                line = self.get_bluetooth_line()
+            elif self.serial:
+                line = self.get_serial_line()
+            if line:
+                print(f"<< {line}")
+                if line[0].lower() == token.lower():
+                    break;
+
+    def get_bluetooth_line(self):
         try:
-            data = self.socket.recv(1024)
+            data = self.socket.recv(1024).decode()
             if data:
-                print(f"<< {data.decode('utf-8')}")
+                self.buffer += data
         except socket.error as e:
             pass
+
+        return self.get_line()
+
+    def get_serial_line(self):
+        if self.serial.in_waiting > 0:
+            data = self.serial.read(1024).decode()
+            if data:
+                self.buffer += data
+
+        return self.get_line()
+
+    def get_line(self):
+        """ Get and remove a single line from the buffer """
+        if '\n' in self.buffer:
+            lines = self.buffer.split('\n', 1)
+            self.buffer = lines[1]
+            return lines[0].strip()
+        return None
 
     def down(self):
         """ Go to rest position """
