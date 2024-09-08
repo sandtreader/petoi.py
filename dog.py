@@ -119,6 +119,9 @@ class Dog:
 
     def send(self, msg):
         """ Send a raw message """
+        if self.buffer:
+            print(f"## {self.buffer}")
+            self.buffer = ''             # Flush cruft from previous command
         print(f">> {msg}")
         if self.socket:
             self.socket.send(msg)
