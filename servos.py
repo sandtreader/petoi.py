@@ -1,6 +1,8 @@
 from dog import *
 
-dog = Dog() # or e.g. Dog("5A:A6") to choose a specific one
+dog = Dog()
+if not dog.alive:
+    quit()
 
 while True:
     dog.down()
@@ -14,4 +16,10 @@ while True:
     dog.knee.front.left.angle(0)
     wait(2)
     dog.knee.front.right.angle(0)
+    wait(2)
+
+    dog.pose({
+        dog.leg.front.left: 50,
+        dog.leg.front.right: 50
+    })
     wait(2)

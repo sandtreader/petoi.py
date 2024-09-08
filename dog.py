@@ -138,6 +138,24 @@ class Dog:
         print("Up!")
         self.do("up")
 
+    def set(self, index, angle):
+        """ Set an individual servo """
+        self.send(f"m{index} {angle}")
+
+    def pose(self, servos):
+        """ Set a pose on multiple servos simultaneously
+
+        servos is dict of Servo -> angle
+        """
+        print("Pose:")
+        command = ''
+        sep = 'm'
+        for servo, angle in servos.items():
+            print(f"  {servo.name} -> {angle}")
+            command = command + f"{sep}{servo.index} {angle}"
+            sep = ' '
+        self.send(command)
+
 class Servo:
     """ Represents a single servo motor on a dog """
     def __init__(self, dog, name, index):
@@ -145,9 +163,16 @@ class Servo:
         self.name = name
         self.index = index
 
+    # Hash and EQ for dict
+    def __hash__(self):
+        return hash(self.name)
+
+    def __eq__(self, other):
+        return self.name == other.name
+
     def angle(self, a):
         print(f"Servo {self.name} -> {a}")
-        self.dog.send(f"m{self.index} {a}")
+        self.dog.set(self.index, a)
 
 # Helpers
 def wait(n):
