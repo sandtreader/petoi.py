@@ -28,8 +28,8 @@ flat = {
     dog.knee.rear.right: 90
 }
 
-
 while True:
+
     dog.down()
     wait(2)
 

@@ -105,6 +105,10 @@ class Dog:
             )
         )
 
+        self.disableVoice();
+        self.disableGyro();
+        print("Ready!")
+
     def __del__(self):
         if self.socket:
             self.socket.close()
@@ -155,6 +159,16 @@ class Dog:
             command = command + f"{sep}{servo.index} {angle}"
             sep = ' '
         self.send(command)
+
+    def disableVoice(self):
+        """ Disable voice control """
+        print("Disabling voice control")
+        self.send("XAd")
+
+    def disableGyro(self):
+        """ Disable gyro """
+        print("Disabling gyro control")
+        self.send("G")
 
 class Servo:
     """ Represents a single servo motor on a dog """
