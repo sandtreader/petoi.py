@@ -2,7 +2,11 @@
     By Paul Clark paul@sandtreader.com, MIT licence
 """
 
-import bluetooth
+try:
+    import bluetooth
+except ImportError:
+    bluetooth = None
+
 import socket
 import time
 import serial
@@ -49,7 +53,7 @@ class Dog:
             else:
                 print("No serial ports found")
 
-        if not self.serial:
+        if not self.serial and bluetooth:
             print(f"Looking for a dog on Bluetooth")
             if device:
                 print(f"Specifically one with {device} in the address")
