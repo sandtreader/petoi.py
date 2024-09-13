@@ -1,6 +1,6 @@
 from dog import *
 
-dog = Dog()
+dog = Dog("COM5") # Change to your Outgoing COM port!
 if not dog.alive:
     quit()
 #dog.debug = True

@@ -32,7 +32,7 @@ class Dog:
         self.debug = False
 
         # Check for serial first
-        if not device or "/dev" in device:
+        if not device or "/dev" in device or "COM" in device:
             print(f"Looking for a dog on serial {device}")
             port = device
             if not port:
