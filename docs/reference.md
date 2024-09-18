@@ -4,6 +4,8 @@ author: "Paul Clark"
 fontsize: 10pt
 disable-header-and-footer: true
 pagestyle: empty
+geometry: margin=1cm
+listings-disable-line-numbers: true
 ---
 
 # Petoi.py Library Reference
@@ -143,7 +145,6 @@ crunch = {
 dog.pose(crunch)
 ```
 
-\newpage
 ## Helper functions
 
 The library provides just one helper function:

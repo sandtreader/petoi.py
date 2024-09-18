@@ -7,7 +7,7 @@ TEMPLATEDIR = pandoc-latex-template
 all: $(PDF_FILES)
 
 %.pdf: %.md Makefile
-	pandoc $< -o $@ --template $(TEMPLATEDIR)/eisvogel.tex --resource-path=$(TEMPLATEDIR)
+	pandoc $< -o $@ --template $(TEMPLATEDIR)/eisvogel.tex --resource-path=$(TEMPLATEDIR) --listings
 
 clean:
 	rm -f $(PDF_FILES)

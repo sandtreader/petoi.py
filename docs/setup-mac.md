@@ -4,6 +4,8 @@ author: "Paul Clark"
 fontsize: 10pt
 disable-header-and-footer: true
 pagestyle: empty
+geometry: margin=1cm
+listings-disable-line-numbers: true
 ---
 
 # How to set up to program Petoi on MacOS
