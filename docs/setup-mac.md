@@ -1,4 +1,4 @@
-# How to set up to program Petoi in Windows
+# How to set up to program Petoi on MacOS
 
 ## Install and set up PyCharm
 
@@ -6,11 +6,12 @@
 
    https://jetbrains.com/pycharm/download/other.html
 
-   Download the latest Windows (exe).  Beware, it is 450MB+!
+   Download the latest macOS version (dmg).  If you have a MacBook Air
+   (M1/M2 chips) you'll need the Apple Silicon version.
+   Beware, these are 600MB+!
 
-2. Run the installer - you don't need to select 'add bin to path',
-   'associate .py', 'add shortcut' etc. unless you feel like using it
-   on the command line later.
+2. Run the installer - it'll give you an icon to drag into your
+   Applications folder like most MacOS applications
 
 3. On the "open project" popup, select the right-hand entry "Get from
    VCS" (version control system), make sure 'Version control' is set
@@ -19,14 +20,7 @@
    default it will create a directory called "petoi.py" in your home
    directory "PycharmProjects" but you can change this if you prefer.
 
-5. You'll need to create a 'virtual interpreter' - pick the latest
-   version of Python (say 3.12.3) and it will download it for you and
-   install it in this project.  That not only gets you the Python
-   language installed (Windows doesn't have it out of the box), it
-   also avoids conflicting with any other Python install in other
-   projects.
-
-6. Find the "Python Packages" icon on the right hand side (like a
+4. Find the "Python Packages" icon on the right hand side (like a
    stack of plates) and search for "pyserial".  This is the module
    that allows you to talk to the Petoi dogs, either by USB cable or
    Bluetooth (we'll come to that!).  Just install the latest one, 3.5
@@ -40,20 +34,19 @@ the same way your headphones or cordless mouse works, but using a
 with more modern wireless communications.  To do this, we need to
 'pair' with a dog:
 
-1. Go to your Settings control panel and select "Bluetooth and other devices"
-2. If you've been this way before:
-   * Look for any existing Bittle__ devices and remove them
-   * In "More Bluetooth options", select the "COM Ports" tab and
-     remove any Bittle stuff there too
-3. Back at the top of the page, select "Add Bluetooth or other
-   device", "Bluetooth (mice, keyboards...)" and select one of the
-   Bittle__ ones.  There will probably be more than one, and one will
-   ask for a PIN number.  Don't use that one!
-4. You should then see two BittleXX_SSP (XX will be a number or
-   letters) "Paired" in the Other Devices list
-5. Scroll down to "More Bluetooth options" and select the "COM Ports"
-   tab.  You should see two COMx ports listed; one is outgoing.
-   Remember that one! (e.g. COM5)
+!!! Test this on Mac - do we need to connect or does the device pop up
+anyway?
+
+You'll need to find the device that MacOS has created for the dog.  Open
+a terminal and do:
+
+```
+ls /dev/tty*
+```
+
+You should see a bunch of 'tty' files (nodes), one or more of which should
+be `tty.BittleXX_SSP` where XX is two digits or letters.  Remember this
+for the next part!
 
 ## Run your first test
 
@@ -63,7 +56,9 @@ right.  Where it says
 ```
 dog = Dog("COM5") # Change to your Outgoing COM port!
 ```
-change the `COM5` to whatever your outgoing port number was.
+
+change the `COM5` to `/dev/tty.BittleXX_SSP` where XX is the one you saw
+above (and it should be marked on the dog)
 
 Then click on the green triangle at the top to run it!
 
