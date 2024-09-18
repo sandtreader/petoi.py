@@ -1,3 +1,11 @@
+---
+title: "Petoi.py MacOS setup"
+author: "Paul Clark"
+fontsize: 10pt
+disable-header-and-footer: true
+pagestyle: empty
+---
+
 # How to set up to program Petoi on MacOS
 
 ## Install and set up PyCharm

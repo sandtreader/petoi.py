@@ -1,3 +1,11 @@
+---
+title: "Petoi.py Windows setup"
+author: "Paul Clark"
+fontsize: 10pt
+disable-header-and-footer: true
+pagestyle: empty
+---
+
 # How to set up to program Petoi in Windows
 
 ## Install and set up PyCharm

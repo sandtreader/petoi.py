@@ -1,3 +1,11 @@
+---
+title: "Petoi.py Library Reference"
+author: "Paul Clark"
+fontsize: 10pt
+disable-header-and-footer: true
+pagestyle: empty
+---
+
 # Petoi.py Library Reference
 
 The `dog.py` module provides a Dog class to control a Petoi robot dog.  It's
@@ -21,9 +29,12 @@ A `Dog` has the following methods:
 | `set(index, angle)` | Set a numbered servo to the given angle |
 | `pose(servos)`      | Do a multi-servo pose                   |
 
+\newpage
+### Skills
+
 The skills available are:
 
-### Positions:
+#### Positions:
 
 These are basic static positions:
 
@@ -37,7 +48,7 @@ These are basic static positions:
 | `dropped`         | Dropped by back legs |
 | `lifted`          | Lifted by neck       |
 
-### Movement:
+#### Movement:
 
 Each movement (gait) should be followed by a direction "F" (forward), "L" or "R" - e.g. `wkF` (which is what `walk()` does).
 
@@ -54,7 +65,8 @@ Each movement (gait) should be followed by a direction "F" (forward), "L" or "R"
 | `tr`       | Trot         |
 | `vt`       | Steps        |
 
-### Behaviour
+\newpage
+#### Behaviour
 
 These are more complex behaviours, some with sound effects!
 
@@ -90,6 +102,7 @@ These are more complex behaviours, some with sound effects!
 | `ts`       | Test                |
 | `wh`       | Wave head           |
 
+\newpage
 ## Servo properties
 
 To save remembering servo numbers, the Dog class provides properties which
@@ -130,6 +143,7 @@ crunch = {
 dog.pose(crunch)
 ```
 
+\newpage
 ## Helper functions
 
 The library provides just one helper function:

@@ -1,3 +1,11 @@
+---
+title: "Petoi.py First script"
+author: "Paul Clark"
+fontsize: 10pt
+disable-header-and-footer: true
+pagestyle: empty
+---
+
 # Your first Petoi dog script
 
 This is where you get to write some code to control a Petoi robot dog!
