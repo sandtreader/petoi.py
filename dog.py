@@ -53,7 +53,7 @@ class Dog:
             else:
                 print("No serial ports found")
 
-        if not self.serial and bluetooth:
+        if not self.serial and not "fake" in device and bluetooth:
             print(f"Looking for a dog on Bluetooth")
             if device:
                 print(f"Specifically one with {device} in the address")
@@ -84,7 +84,7 @@ class Dog:
                 self.socket.setblocking(False)
                 print("Connected")
 
-        if not self.socket and not self.serial:
+        if not self.socket and not self.serial and not "fake" in device:
             print("No dog found!")
             return
         self.alive = True
@@ -138,7 +138,8 @@ class Dog:
             self.socket.send(msg)
         elif self.serial:
             self.serial.write(msg.encode())
-        self.wait_for_response(msg[0]);
+        if self.socket or self.serial:
+            self.wait_for_response(msg[0]);
 
     def wait_for_response(self, token):
         while True:

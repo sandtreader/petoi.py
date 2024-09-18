@@ -1,6 +1,13 @@
 from dog import *
 
-dog = Dog("COM5") # Change to your Outgoing COM port!
+# Change to your outgoing serial port:
+#   COMX (win)
+#   /dev/tty.BittleXX_SSP (mac)
+#   /dev/rfcommX (Linux)
+#or fake to just pretend
+
+dog = Dog("fake")
+
 if not dog.alive:
     quit()
 #dog.debug = True
