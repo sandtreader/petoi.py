@@ -57,13 +57,13 @@ with more modern wireless communications.  To do this, we need to
 
 ## Run your first test
 
-Go back to PyCharm and click on "test.py" in the file listing on the
+Go back to PyCharm and click on "example.py" in the file listing on the
 right.  Where it says
 
 ```
-dog = Dog("COM5") # Change to your Outgoing COM port!
+dog = Dog("fake")
 ```
-change the `COM5` to whatever your outgoing port number was.
+change the `fake` to whatever your outgoing port number was.
 
 Then click on the green triangle at the top to run it!
 
