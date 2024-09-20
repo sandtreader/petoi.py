@@ -31,6 +31,15 @@ A `Dog` has the following methods:
 | `set(index, angle)` | Set a numbered servo to the given angle |
 | `pose(servos)`      | Do a multi-servo pose                   |
 
+## Properties
+
+A `Dog` also has the following properties:
+
+| Property | Meaning / effect                       |
+|----------|----------------------------------------|
+| alive    | Connected to the real (or fake) dog OK |
+| debug    | Set to log all serial communication    |
+
 \newpage
 ### Skills
 
