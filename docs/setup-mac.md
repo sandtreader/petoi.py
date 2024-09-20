@@ -44,14 +44,15 @@ the same way your headphones or cordless mouse works, but using a
 with more modern wireless communications.  To do this, we need to
 'pair' with a dog:
 
-!!! Test this on Mac - do we need to connect or does the device pop up
-anyway?
+Go to "System Settings" and click on "Bluetooth" on the left hand side.
+Make sure it's turned on, and you should see a BittleXX_SSP in "Nearby
+Devices" - click on "Connect".
 
 You'll need to find the device that MacOS has created for the dog.  Open
 a terminal and do:
 
 ```
-ls /dev/tty*
+ls /dev/tty.*
 ```
 
 You should see a bunch of 'tty' files (nodes), one or more of which should
