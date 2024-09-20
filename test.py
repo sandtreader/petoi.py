@@ -2,6 +2,7 @@
 
 from dog import *
 dog = Dog("", True)  # with debug
+if not dog.alive:
+    quit()
 
-dog.up()
-
+dog.do("hi")

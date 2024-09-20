@@ -114,7 +114,8 @@ class Dog:
             )
         )
 
-        self.disable_voice()
+        self.mute_buzzer()
+       # self.disable_voice()
         self.disable_gyro()
         print("Ready!")
 
@@ -220,6 +221,11 @@ class Dog:
             command = command + f"{sep}{servo.index} {angle}"
             sep = ' '
         self.send(command)
+
+    def mute_buzzer(self):
+        """ Mute the buzzer """
+        print("Muting buzzer")
+        self.send("b0")
 
     def disable_voice(self):
         """ Disable voice control """
