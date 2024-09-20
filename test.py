@@ -5,4 +5,7 @@ dog = Dog("", True)  # with debug
 if not dog.alive:
     quit()
 
-dog.do("hi")
+dog.walk()
+wait(10)
+dog.down()
+
