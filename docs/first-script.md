@@ -45,7 +45,7 @@ Then run it (in PyCharm, click the green triangle).  You should see this on
 the console:
 
 ```
-Disabling voice control
+Muting buzzer
 Disabling gyro control
 Ready!
 Up!
