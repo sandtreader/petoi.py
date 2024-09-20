@@ -11,10 +11,17 @@ listings-disable-line-numbers: true
 # Petoi.py Library Reference
 
 The `dog.py` module provides a Dog class to control a Petoi robot dog.  It's
-constructed with a serial device name, a Bluetooth MAC address or "fake":
+constructed with a serial device name, a Bluetooth MAC address or "fake".  If
+left empty, it will search for both serial and Bluetooth devices (if enabled):
 
 ```
 dog = new Dog("COM5")
+```
+
+You can also add an extra parameter "True" to enable debugging:
+
+```
+dog = new Dog("", True)
 ```
 
 ## Methods
