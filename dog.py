@@ -24,12 +24,12 @@ class Dog:
     To force Bluetooth specify a portion of a MAC address, or ":"
     To force serial, specify a serial device name - e.g. /dev/rfcomm0
     """
-    def __init__(self, device=""):
+    def __init__(self, device="", debug=False):
         self.socket = None
         self.serial = None
         self.alive = False
         self.buffer = ''
-        self.debug = False
+        self.debug = debug
 
         # Check for serial first
         if not device or "/dev" in device or "COM" in device:
@@ -139,7 +139,7 @@ class Dog:
         elif self.serial:
             self.serial.write(msg.encode())
         if self.socket or self.serial:
-            self.wait_for_response(msg[0]);
+            return self.wait_for_response(msg[0]);
 
     def wait_for_response(self, token):
         while True:
@@ -150,7 +150,7 @@ class Dog:
             if line:
                 self.printd(f"<< {line}")
                 if line[0].lower() == token.lower():
-                    break;
+                    return line[0];  # Note, not lower
 
     def get_bluetooth_line(self):
         try:
@@ -229,7 +229,9 @@ class Dog:
     def disable_gyro(self):
         """ Disable gyro """
         print("Disabling gyro control")
-        self.send("G")
+        state_now = self.send("G")
+        if state_now == 'G':  # We just toggled it on again
+            self.send("G")
 
 class Servo:
     """ Represents a single servo motor on a dog """
