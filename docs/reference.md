@@ -110,15 +110,15 @@ These are more complex behaviours, some with sound effects!
 To save remembering servo numbers, the Dog class provides properties which
 hold a Servo object, which you can call `angle(n)` on to set the angle:
 
-| Servo property     | Action               | Servo number |
+| Servo property     | Human equivalent     | Servo number |
 |--------------------|----------------------|--------------|
 | `head`             | Head                 | 0            |
 | `leg.front.left`   | Front left shoulder  | 8            |
 | `leg.front.right`  | Front right shoulder | 9            |
 | `leg.rear.left`    | Rear left hip        | 11           |
 | `leg.rear.right`   | Rear right hip       | 10           |
-| `knee.front.left`  | Front left knee      | 12           |
-| `knee.front.right` | Front right knee     | 13           |
+| `knee.front.left`  | Front left elbow     | 12           |
+| `knee.front.right` | Front right elbow    | 13           |
 | `knee.rear.left`   | Rear left knee       | 15           |
 | `knee.rear.right`  | Rear right knee      | 14           |
 
